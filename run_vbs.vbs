@@ -1,4 +1,4 @@
-' Run VBS v1
+' Run VBS v1.1
 
 Set fs = CreateObject("Scripting.FileSystemObject")
 Set shell = CreateObject("WScript.Shell")
@@ -18,7 +18,7 @@ Do While last_path_file_read.AtEndOfStream = False
 Loop
 
 Dim input
-input = InputBox("Welcome to Run VBS!", "Run VBS", default)
+input = InputBox("Type the path of a file, folder or internet link and Run VBS will open it for you.", "Run VBS", default)
 
 If input <> "" Then
 	Set last_path_file_write = fs.OpenTextFile(last_path_file, 2, False)
