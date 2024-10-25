@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>The Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <style>
     body {
@@ -11,7 +12,11 @@
         height: 100vh;
 
         margin: 0;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        background: #fff;
+        color: #000;
     }
 
     p {
@@ -29,8 +34,10 @@
         text-decoration: none;
     }
 
-    input[type=text] {
+    #page_number {
         margin: 0;
+        padding-left: 5px;
+        text-align: center;
 
         font-family: inherit;
         outline: none;
@@ -39,79 +46,61 @@
     }
 
     #container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        max-width: 80%;
+        margin: auto;
 
-        font-family: Cambria, Times, 'Times New Roman', serif
+        font-family: Cambria, Times, 'Times New Roman', serif;
     }
 
-    #page {
-        max-width: 80%;
+    #nav {
+        text-align: center;
+        border-bottom: 3px double #000;
+        padding-bottom: 10px;
+        white-space: nowrap;
     }
 </style>
 
 <body>
     <div id="container">
-        <p id="nav"><input type="text" value="aaa"> <a href="#">Back</a></p>
-        <p id="page">Lorem ipsum odor amet, consectetuer adipiscing elit. Per maecenas viverra eleifend imperdiet
-            semper ipsum netus elit. Consectetur inceptos semper volutpat proin praesent convallis orci mollis. Senectus
-            luctus purus duis; nisl fusce tortor vestibulum. Rhoncus suscipit eros sollicitudin varius; euismod
-            consectetur magnis proin dignissim. Sodales per libero hac at malesuada dictum sollicitudin justo curae.
-            Quisque consectetur eget, imperdiet quam ante volutpat. Turpis venenatis fusce sapien vehicula convallis
-            consequat. Non lobortis pulvinar quis ut justo libero mi accumsan.
-
-            Commodo donec diam nam sociosqu non massa facilisi. Amet tempus congue egestas bibendum hac dis. Feugiat
-            vitae laoreet turpis quis tempus venenatis non pharetra. Augue purus maximus fames erat varius potenti.
-            Montes facilisi eleifend ut feugiat convallis erat. Est ultrices mi augue; tempor et vivamus suscipit
-            ultricies. Dui finibus in commodo pretium inceptos cubilia.
-
-            Scelerisque dapibus natoque lacus penatibus; eros fermentum sit ultricies id. Sem viverra dapibus aptent at
-            nunc; donec fames enim dolor. Nam praesent purus facilisi quis consequat torquent; diam lobortis. Morbi at
-            nec amet congue egestas. Dapibus nisi dictumst proin rutrum ipsum nostra duis donec. Cursus vitae efficitur
-            leo aenean tempor efficitur per litora. Per ac sit in ligula risus egestas eget sollicitudin. Class quam
-            cubilia massa mattis, potenti enim amet. Habitant class nibh ante nostra tristique cubilia ultrices nec.
-
-            Sodales sem nascetur mauris auctor congue ultricies; in dapibus lectus. Ullamcorper litora imperdiet
-            porttitor vel suscipit adipiscing. Purus diam efficitur cursus gravida facilisis ultricies etiam quisque.
-            Ipsum egestas dui blandit leo faucibus blandit etiam nec. Nam turpis donec blandit hendrerit quam libero
-            gravida diam. Nibh quam blandit curabitur class aenean odio. Malesuada per nisl a dui nisl.
-
-            Ultricies arcu proin arcu potenti tincidunt habitasse metus. Ultrices id fames venenatis vehicula proin
-            malesuada porta semper? Montes taciti id eros dui nascetur. Eleifend ridiculus felis curae penatibus
-            dignissim, consectetur tellus eu. Class est quisque quis, conubia in metus luctus euismod felis. Gravida
-            fermentum lectus pulvinar sollicitudin tincidunt senectus pellentesque sem in. Proin montes porttitor
-            efficitur dictumst egestas blandit nisi nec. Nec viverra class hac vitae magna maecenas lacus.
-
-            Conubia natoque luctus, tempor porttitor ante dis. Placerat vitae senectus suscipit, nascetur eget aliquet.
-            Elit integer ornare commodo leo lacinia integer amet. Erat ullamcorper risus praesent, egestas leo viverra
-            vel. Pretium laoreet luctus at varius nulla tristique nulla consectetur. Quisque orci ligula fermentum
-            tellus imperdiet. Placerat fringilla vitae integer magna molestie congue quisque eros. Mattis elit facilisis
-            turpis ridiculus nullam congue. Platea vestibulum efficitur nisi nisi magnis; nibh augue massa.
-
-            Fringilla efficitur lectus per justo sollicitudin viverra. Nascetur dolor velit torquent maximus vel platea
-            ligula dictum. Nostra tellus phasellus ut viverra porttitor duis. Pellentesque cras netus erat tellus
-            molestie urna sed. Amet bibendum orci arcu ullamcorper blandit lacus elementum. Nibh porta nibh curae aenean
-            platea vestibulum eget sapien. Ultricies himenaeos semper volutpat neque; tortor convallis porta tortor. At
-            orci feugiat imperdiet nisl, habitasse turpis. Metus nisi eleifend venenatis ante consequat amet!
-
-            Nec risus mollis porttitor eleifend pretium blandit curabitur. Cras mus leo nullam fusce ac orci enim.
-            Tortor felis odio fames iaculis; enim condimentum semper eget. Porttitor sit cubilia parturient inceptos
-            vestibulum aliquam pulvinar. Quis habitant ex in cursus fusce curae. Arcu class efficitur rutrum litora
-            sagittis semper? Mollis vitae tincidunt fermentum augue adipiscing primis curabitur faucibus.
-
-            Ac primis inceptos sapien consequat aptent. Natoque malesuada proin dapibus nostra porttitor egestas
-            imperdiet. Ultricies molestie dui vestibulum; fringilla blandit aliquet. Ultricies lacus tortor consequat
-            mollis condimentum. Cursus nunc phasellus aliquet faucibus arcu nostra ut. Vulputate placerat id; dictum ex
-            diam turpis. Egestas mi a tempus congue interdum; habitasse ornare donec.
-
-            Taciti velit class pulvinar platea per; est vulputate condimentum. Amet blandit class penatibus proin massa
-            penatibus. Phasellus ultricies at vitae eros malesuada mi velit mattis. Conubia vehicula viverra vulputate
-            ut porta nisl. Eget vitae potenti porttitor eget ad. Finibus tempus luctus rhoncus taciti maecenas proin,
-            sapien nisl. Leo senectus pharetra fringilla; fringilla hac ac turpis nibh. Massa montes fringilla orci
-            netus ligula orci.</p>
+        <p id="nav"><a id="back" href="#">&xlarr;</a>&emsp;<input id="page_number" type="number" placeholder="Page"
+                value="1">&emsp;<a id="forward" href="#">&xrarr;</a></p>
+        <p id="page"></p>
     </div>
 </body>
+<script>
+    const page_number = document.querySelector("#page_number");
+    const back = document.querySelector("#back");
+    const forward = document.querySelector("#forward");
+    const page = document.querySelector("#page");
+
+    function load_page(number) {
+        page_number.value = number;
+        page.innerText = number;
+    }
+
+    function valid_page_number() {
+        let number = parseInt(page_number.value);
+        if (!isNaN(number) && number > 1) {
+            return number;
+        } else {
+            page_number.value = 1;
+            return 1;
+        }
+    }
+
+    page_number.onchange = (e) => {
+        load_page(valid_page_number());
+    }
+
+    back.onclick = (e) => {
+        load_page(valid_page_number() - 1);
+    }
+
+    forward.onclick = (e) => {
+        load_page(valid_page_number() + 1);
+    }
+
+    load_page(1);
+</script>
 
 </html>
