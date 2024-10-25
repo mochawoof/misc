@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Fibonacci sequence</title>
+</head>
+<style>
+    #chart_container {
+        position: relative;
+    }
+</style>
+
+<body>
+    <div id="graph"></div>
+    <p>Iterations: <input id="iterations_input" type="number" value="10"></p>
+    <p>Scale: <input id="scale_input" type="number" value="2"></p>
+    <p><button onclick="run()">Plot</button></p>
+</body>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script>
+    const graph = document.querySelector("#graph");
+
+    const iterations_input = document.querySelector("#iterations_input");
+    const scale_input = document.querySelector("#scale_input");
+
+    let sequence;
+
+    function run() {
+        sequence = [1];
+        for (let i = 0; i < parseInt(iterations_input.value); i++) {
+            let sum = 0;
+            for (let j = 1; j <= parseInt(scale_input.value); j++) {
+                let place = sequence[sequence.length - j];
+                if (!isNaN(place)) {
+                    sum += place;
+                }
+            }
+            sequence.push(sum);
+        }
+
+        plot();
+    }
+
+    function generate_plot_x(places) {
+        let x = [];
+        for (let i=0; i < places; i++) {
+            x.push(i);
+        }
+        return x;
+    }
+
+    function plot() {
+        Plotly.newPlot(graph, [{
+            x: generate_plot_x(sequence.length),
+            y: sequence
+        }], {
+            margin: {t: 0}
+        });
+    }
+
+    run();
+</script>
+
+</html>
