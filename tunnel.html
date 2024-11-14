@@ -14,7 +14,7 @@
     }
 
     #canvas {
-        background: blue;
+        background: #000;
         position: absolute;
         margin: auto;
         top: 0; bottom: 0; left: 0; right: 0;
@@ -24,9 +24,10 @@
     <canvas id="canvas" width="1280" height="720"></canvas>
 </body>
 <script>
+    // Resize canvas properly for aspect ratio
     const canvas = document.querySelector("#canvas");
 
-    window.onresize = (e) => {
+    function onResize() {
         let caspect = canvas.height / canvas.width;
         let icaspect = canvas.width / canvas.height;
 
@@ -44,5 +45,41 @@
             canvas.style.height = vheight + "px";
         }
     }
+
+    function getScale(time) {
+        return (epoch() - (Math.floor(epoch() / time) * time)) / time;
+    }
+
+    const ctx = canvas.getContext("2d");
+    let firstDraw = -1;
+
+    function epoch() {
+        return Date.now() - firstDraw;
+    }
+
+    function drawGame() {
+        if (firstDraw == -1) {
+            firstDraw = Date.now();
+        }
+
+        onResize();
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "#00f";
+        ctx.lineWidth = 2;
+
+        let maxLines = 20;
+        for (let i=0; i < maxLines; i++) {
+            let lineRectWidth = canvas.width;
+
+            let x = (canvas.width / 2) - (lineRectWidth / 2);
+            let y = (canvas.height / 2) - (lineRectHeight / 2);
+
+            ctx.strokeRect(x, y, lineRectWidth, lineRectHeight);
+        }
+
+        requestAnimationFrame(drawGame);
+    }
+    drawGame();
 </script>
 </html>
