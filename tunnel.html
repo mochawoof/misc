@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Light Tunnel: 3D</title>
+</head>
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+        background: #000;
+    }
+
+    #canvas {
+        background: blue;
+        position: absolute;
+        margin: auto;
+        top: 0; bottom: 0; left: 0; right: 0;
+    }
+</style>
+<body>
+    <canvas id="canvas" width="1280" height="720"></canvas>
+</body>
+<script>
+    const canvas = document.querySelector("#canvas");
+
+    window.onresize = (e) => {
+        let caspect = canvas.height / canvas.width;
+        let icaspect = canvas.width / canvas.height;
+
+        let vwidth = window.innerWidth;
+        let vheight = vwidth * caspect;
+
+        let hheight = window.innerHeight;
+        let hwidth = hheight * icaspect;
+
+        if (vheight > window.innerHeight) {
+            canvas.style.width = hwidth + "px";
+            canvas.style.height = hheight + "px";
+        } else {
+            canvas.style.width = vwidth + "px";
+            canvas.style.height = vheight + "px";
+        }
+    }
+</script>
+</html>
