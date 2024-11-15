@@ -50,11 +50,26 @@
         return (epoch() - (Math.floor(epoch() / time) * time)) / time;
     }
 
+    function getInvScale(time) {
+        let scale = getScale(time * 2) * 2;
+        if (scale < 1) {
+            return scale;
+        } else {
+            return 2 - scale;
+        }
+    }
+
     const ctx = canvas.getContext("2d");
     let firstDraw = -1;
 
     function epoch() {
         return Date.now() - firstDraw;
+    }
+
+    function rgb(r, g, b) {
+        if (r > 255) {r = 255} if (g > 255) {g = 255} if (b > 255) {b = 255}
+        if (r < 0) {r = 0} if (g < 0) {g = 0} if (b < 0) {b = 0}
+        return "rgb(" + r + ", " + g + ", " + b + ")";
     }
 
     function drawGame() {
@@ -65,17 +80,62 @@
         onResize();
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = "#00f";
         ctx.lineWidth = 2;
+        
+        let lrectColor = [0, 255, 255];
+        let lrectSpacing = 10;
+        let lrectWidth = 0;
+        let lrectN = 0;
 
-        let maxLines = 20;
-        for (let i=0; i < maxLines; i++) {
-            let lineRectWidth = canvas.width;
+        let lrectColorBeat = 1000;
+        let lrectSpeedBeat = 300;
 
-            let x = (canvas.width / 2) - (lineRectWidth / 2);
-            let y = (canvas.height / 2) - (lineRectHeight / 2);
+        while (lrectWidth < canvas.width) {
+            let colorScale = getInvScale(lrectColorBeat / 2);
+            ctx.strokeStyle = rgb(
+                lrectColor[0] + (colorScale * 255),
+                lrectColor[1] + (colorScale * 255),
+                lrectColor[2] * (colorScale * 255)
+            );
 
-            ctx.strokeRect(x, y, lineRectWidth, lineRectHeight);
+            lrectWidth = (lrectN * lrectN) * lrectSpacing;
+            let lrectNextWidth = ((lrectN + 1) * (lrectN + 1)) * lrectSpacing;
+            lrectWidth += (lrectNextWidth - lrectWidth) * getScale(lrectSpeedBeat);
+            
+            let lrectHeight = (canvas.height / canvas.width) * lrectWidth;
+            let lrectx = (canvas.width / 2) - (lrectWidth / 2);
+            let lrecty = (canvas.height / 2) - (lrectHeight / 2);
+
+            // Draw 3d diagonal lines
+            if (lrectN == 1) {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(lrectx, lrecty);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(canvas.width - 1, 0);
+                ctx.lineTo(lrectx + lrectWidth, lrecty);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height - 1);
+                ctx.lineTo(lrectx, lrecty + lrectHeight);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(canvas.width - 1, canvas.height - 1);
+                ctx.lineTo(lrectx + lrectWidth, lrecty + lrectHeight);
+                ctx.stroke();
+            }
+
+            ctx.strokeRect(
+                lrectx,
+                lrecty,
+                lrectWidth,
+                lrectHeight
+            );
+            lrectN++;
         }
 
         requestAnimationFrame(drawGame);
