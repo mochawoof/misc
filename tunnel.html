@@ -59,11 +59,8 @@
         }
     }
 
-    const ctx = canvas.getContext("2d");
-    let firstDraw = -1;
-
     function epoch() {
-        return Date.now() - firstDraw;
+        return Date.now() - firstDrawTime;
     }
 
     function rgb(r, g, b) {
@@ -72,74 +69,50 @@
         return "rgb(" + r + ", " + g + ", " + b + ")";
     }
 
-    function drawGame() {
-        if (firstDraw == -1) {
-            firstDraw = Date.now();
-        }
+    const ctx = canvas.getContext("2d");
+    let firstDrawTime = -1;
+    let debug = false;
+    let lastFrameTime = 0;
 
+    function drawGame() {
+        // Timing calculations
+        if (firstDrawTime == -1) {
+            firstDrawTime = Date.now();
+        }
+        let thisFrameDelta = epoch() - lastFrameTime;
+        lastFrameTime = epoch();
+
+        // Resize
         onResize();
 
+        // Draw
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.lineWidth = 2;
+        ctx.strokeStyle = "#0ff";
         
-        let lrectColor = [0, 255, 255];
-        let lrectSpacing = 10;
-        let lrectWidth = 0;
-        let lrectN = 0;
+        ctx.strokeRect(0, 0, 200, 200);
 
-        let lrectColorBeat = 1000;
-        let lrectSpeedBeat = 300;
-
-        while (lrectWidth < canvas.width) {
-            let colorScale = getInvScale(lrectColorBeat / 2);
-            ctx.strokeStyle = rgb(
-                lrectColor[0] + (colorScale * 255),
-                lrectColor[1] + (colorScale * 255),
-                lrectColor[2] * (colorScale * 255)
-            );
-
-            lrectWidth = (lrectN * lrectN) * lrectSpacing;
-            let lrectNextWidth = ((lrectN + 1) * (lrectN + 1)) * lrectSpacing;
-            lrectWidth += (lrectNextWidth - lrectWidth) * getScale(lrectSpeedBeat);
-            
-            let lrectHeight = (canvas.height / canvas.width) * lrectWidth;
-            let lrectx = (canvas.width / 2) - (lrectWidth / 2);
-            let lrecty = (canvas.height / 2) - (lrectHeight / 2);
-
-            // Draw 3d diagonal lines
-            if (lrectN == 1) {
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(lrectx, lrecty);
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.moveTo(canvas.width - 1, 0);
-                ctx.lineTo(lrectx + lrectWidth, lrecty);
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.moveTo(0, canvas.height - 1);
-                ctx.lineTo(lrectx, lrecty + lrectHeight);
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.moveTo(canvas.width - 1, canvas.height - 1);
-                ctx.lineTo(lrectx + lrectWidth, lrecty + lrectHeight);
-                ctx.stroke();
-            }
-
-            ctx.strokeRect(
-                lrectx,
-                lrecty,
-                lrectWidth,
-                lrectHeight
-            );
-            lrectN++;
+        // Draw debug
+        if (debug) {
+            ctx.fillStyle = "#f00";
+            ctx.fillRect(0, 0, 200, 50);
+            ctx.fillStyle = "#0ff";
+            ctx.font = "10px sans-serif";
+            ctx.fillText("Frame time " + thisFrameDelta + "ms", 0, 10);
+            ctx.fillText("Fps " + (1000 / thisFrameDelta), 0, 20);
+            ctx.fillText(canvas.width + "x" + canvas.height, 0, 30);
         }
 
         requestAnimationFrame(drawGame);
     }
     drawGame();
+
+    // Key listening
+    addEventListener("keyup", (e) => {
+        let keyLower = e.key.toLowerCase();
+        if (keyLower == "b") {
+            debug = !debug;
+        }
+    });
 </script>
 </html>
