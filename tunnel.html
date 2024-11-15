@@ -94,13 +94,17 @@
 
         // Draw debug
         if (debug) {
+            let debugFontSize = 25;
+            let debugBoxWidth = 300;
+
             ctx.fillStyle = "#f00";
-            ctx.fillRect(0, 0, 200, 50);
+            ctx.fillRect(0, 0, debugBoxWidth, debugFontSize * 4);
             ctx.fillStyle = "#0ff";
-            ctx.font = "10px sans-serif";
-            ctx.fillText("Frame time " + thisFrameDelta + "ms", 0, 10);
-            ctx.fillText("Fps " + (1000 / thisFrameDelta), 0, 20);
-            ctx.fillText(canvas.width + "x" + canvas.height, 0, 30);
+
+            ctx.font = debugFontSize + "px sans-serif";
+            ctx.fillText("Frame time " + thisFrameDelta + "ms", 0, debugFontSize, debugBoxWidth);
+            ctx.fillText("Fps " + (1000 / thisFrameDelta), 0, debugFontSize * 2, debugBoxWidth);
+            ctx.fillText(canvas.width + "x" + canvas.height, 0, debugFontSize * 3, debugBoxWidth);
         }
 
         requestAnimationFrame(drawGame);
