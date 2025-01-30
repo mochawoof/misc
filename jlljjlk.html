@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>jlljjlk</title>
+</head>
+
+<body>
+    <p id="tip">Solve for result</p>
+    <input type="range" id="solvefor" min="1" max="3" value="1">
+    <input type="text" id="radius">
+    <input type="checkbox" id="isarea">
+    <input type="text" id="sector" value="360">
+    <button id="submit">Submit</button>
+    <p id="result"></p>
+    <canvas id="plot" width="500" height="400"></canvas>
+</body>
+<script>
+    let ctx = plot.getContext("2d");
+
+    // Eval shorthands
+    function rad(d) {
+        return d * Math.PI / 180;
+    }
+    function sqrt(n) {
+        return Math.sqrt(n);
+    }
+    function pow(n, p) {
+        return Math.pow(n, p);
+    }
+
+    solvefor.oninput = () => {
+        if (solvefor.value == 1) {
+            tip.innerText = "Solve for result given radius and sector";
+        } else if (solvefor.value == 2) {
+            tip.innerText = "Solve for sector given radius and result";
+        } else if (solvefor.value == 3) {
+            tip.innerText = "Solve for radius given sector and result";
+        }
+    }
+    submit.onclick = () => {
+        radius.value = eval(radius.value);
+        sector.value = eval(sector.value);
+
+        let plotradius = 0;
+        let plotsector = 0;
+        let plotresult = 0;
+        let textresult = "";
+
+        if (solvefor.value == 1) {
+            textresult = (isarea.checked) ? (Math.PI * pow(radius.value, 2)) * (sector.value / 360) : (2 * Math.PI * radius.value) * (sector.value / 360);
+            plotresult = textresult;
+            plotradius = radius.value;
+            plotsector = sector.value;
+        } else if (solvefor.value == 2) {
+            textresult = (isarea.checked) ? (sector.value * 360) / pow(radius.value, 2) / Math.PI : (sector.value * 360) / radius.value / Math.PI / 2;
+            plotsector = textresult;
+            plotradius = radius.value;
+            plotresult = sector.value;
+        } else if (solvefor.value == 3) {
+            textresult = (isarea.checked) ? sqrt(sector.value / (radius.value / 360) / Math.PI) : sector.value / (radius.value / 360) / Math.PI / 2;
+            plotradius = textresult;
+            plotsector = radius.value;
+            plotresult = sector.value;
+        }
+
+        result.innerText = textresult;
+
+        // Draw circle
+        ctx.clearRect(0, 0, plot.width, plot.height);
+        ctx.lineWidth = 2;
+        ctx.moveTo(110, 110);
+        ctx.beginPath();
+        ctx.arc(110, 110, 100, 0, Math.PI * 2);
+        ctx.strokeStyle = "#000";
+        ctx.stroke();
+
+        // Draw sector
+        ctx.beginPath();
+        ctx.moveTo(110, 110);
+        ctx.arc(110, 110, 100, -rad(90), rad(plotsector - 90));
+        ctx.strokeStyle = "#f00";
+        ctx.fillStyle = "#f00";
+        if (isarea.checked) {
+            ctx.fill();
+        } else {
+            ctx.lineTo(110, 110);
+            ctx.stroke();
+        }
+    }
+</script>
+
+</html>
