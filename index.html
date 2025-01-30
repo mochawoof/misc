@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>mochawoof's pastebin</title>
+    <title>junk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <style>
@@ -22,13 +22,13 @@
     }
 
     .file::before {
-        content: "►";
+        content: "🡺";
         margin-right: 5px;
         vertical-align: top;
     }
 
     .unfolded::before {
-        content: "▼";
+        content: "🡻";
     }
 
     .code {
@@ -521,7 +521,13 @@ https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javasc
                     let link = document.createElement("a");
                     link.href = "#";
                     p.classList.add("file");
-                    link.innerText = file.name;
+                    link.innerText = "Expand";
+                    link.style.marginLeft = "8px";
+
+                    let extlink = document.createElement("a");
+                    extlink.href = file.path;
+                    extlink.innerText = file.name;
+                    p.appendChild(extlink);
 
                     if (file.size > FILE_SIZE_LIMIT) {
                         p.classList.add("large");
@@ -532,28 +538,31 @@ https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javasc
                             if (p.classList.contains("unfolded")) {
                                 // Fold it
                                 p.classList.remove("unfolded");
+                                link.innerText = "Expand";
                             } else {
                                 // Unfold it
                                 p.classList.add("unfolded");
+                                link.innerText = "Close";
                                 if (p.getElementsByClassName("code").length == 0) {
                                     let pre = document.createElement("pre");
                                     pre.classList.add("code");
                                     let code = document.createElement("code");
 
                                     code.innerText = "Loading...";
-                                    fetch(file.download_url).then((fd) => {
-                                        if (fd.headers.get("content-type").startsWith("text")) {
-                                            fd.text().then((ft) => {
-                                                let formatted_text = ft;
-                                                let formatter = Prism.languages.text;
-                                                if (Prism.languages[file_lang] && file.size <= HIGHLIGHTING_LIMIT) {
-                                                    formatter = Prism.languages[file_lang];
-                                                }
+                                    fetch(file.url).then((fd) => {
+                                        fd.text().then((fj) => {
+                                            let fjson = JSON.parse(fj);
+                                            let ft = atob(fjson.content);
+                                            //console.log(ft);
+                                            let formatted_text = ft;
+                                            let formatter = Prism.languages.text;
+                                            if (Prism.languages[file_lang] && file.size <= HIGHLIGHTING_LIMIT) {
+                                                formatter = Prism.languages[file_lang];
+                                            }
 
-                                                formatted_text = Prism.highlight(ft, formatter, file_lang);
-                                                code.innerHTML = formatted_text;
-                                            });
-                                        }
+                                            formatted_text = Prism.highlight(ft, formatter, file_lang);
+                                            code.innerHTML = formatted_text;
+                                        });
                                     });
 
                                     let copy_button = document.createElement("button");
