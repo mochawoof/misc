@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>junk</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <style>
@@ -195,7 +194,7 @@
 
 <body>
     <div id="container">
-        <h1>junk</h1>
+        <h1>misc</h1>
         <p id="loader">Loading...</p>
     </div>
 </body>
@@ -507,7 +506,7 @@ https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javasc
     const HIGHLIGHTING_LIMIT = 100000;
     let files;
     let container = document.querySelector("#container");
-    fetch("https://api.github.com/repos/mochawoof/junk/contents").then((d) => {
+    fetch("https://api.github.com/repos/mochawoof/misc/contents").then((d) => {
         d.text().then((t) => {
             let response = JSON.parse(t);
             files = response;
