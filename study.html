@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Study tool</title>
+    </head>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+        }
+        #boxes {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <body>
+        <p><input id="fileinput" type="file" oninput="loadfile()"></p>
+        <p><img id="img"></p>
+        <div id="boxes"></div>
+        <p>
+            <button onclick="newtextbox()">New text box</button>
+            <button onclick="reset()">Reset text boxes</button>
+            <button onclick="save()">Save</button>
+            <button onclick="load()">Load</button>
+        </p>
+    </body>
+    <script>
+        function loadfile() {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                img.src = reader.result;
+            }
+            reader.readAsDataURL(fileinput.files[0]);
+        }
+
+        let activebox = null;
+        let activeboxrelativex = 0;
+        let activeboxrelativey = 0;
+
+        document.onmouseup = (e) => {
+            activebox = null;
+        }
+        document.onmousemove = (e) => {
+            if (activebox != null) {
+                activebox.style.top = (e.clientY - activeboxrelativey) + "px";
+                activebox.style.left = (e.clientX - activeboxrelativex) + "px";
+            }
+        }
+
+        function newtextbox() {
+            let box = document.createElement("div");
+            box.style.position = "absolute";
+            box.style.top = img.y + "px";
+            box.style.left = img.x + "px";
+            box.style.textAlign = "left";
+
+            let dragger = document.createElement("button");
+            dragger.style.visibility = "hidden";
+            dragger.innerText = "+";
+            box.appendChild(dragger);
+
+            box.onmouseenter = (e) => {
+                dragger.style.visibility = "visible";
+            }
+            box.onmouseleave = (e) => {
+                dragger.style.visibility = "hidden";
+            }
+
+            let textbox = document.createElement("textarea");
+            box.appendChild(textbox);
+
+            dragger.onmousedown = (e) => {
+                activebox = box;
+                activeboxrelativex = e.clientX - box.getBoundingClientRect().x;
+                activeboxrelativey = e.clientY - box.getBoundingClientRect().y;
+            }
+
+            boxes.appendChild(box);
+            textbox.focus();
+            return box;
+        }
+
+        function save() {
+            let file = img.src + "\n";
+            boxes.childNodes.forEach((e) => {
+                file += e.style.top + "," + e.style.left + ":" + e.querySelector("textarea").value + "\n";
+            });
+            
+            let a = document.createElement("a");
+            a.href = "data:," + file;
+            a.download = "myst.st";
+            a.click();
+        }
+
+        function load() {
+            let fileselector = document.createElement("input");
+            fileselector.type = "file";
+            fileselector.accept = ".st";
+            fileselector.oninput = (e) => {
+                fileselector.files[0].text().then((t) => {
+                    img.src = "";
+                    boxes.innerHTML = "";
+
+                    let split = t.split("\n");
+                    img.src = split[0];
+
+                    for (let i = 1; i < split.length; i++) {
+                        let linesplit = split[i].split(":");
+                        let possplit = linesplit[0].split(",");
+                        let box = newtextbox();
+                        box.style.top = possplit[0];
+                        box.style.left = possplit[1];
+                        box.querySelector("textarea").value = linesplit[1];
+                    }
+                });
+            }
+            fileselector.click();
+        }
+
+        function reset() {
+            boxes.childNodes.forEach((e) => {
+                e.querySelector("textarea").value = "";
+            });
+        }
+    </script>
+</html>
