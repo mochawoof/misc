@@ -60,11 +60,22 @@
             dragger.innerText = "+";
             box.appendChild(dragger);
 
+            let remover = document.createElement("button");
+            remover.style.visibility = "hidden";
+            remover.innerText = "x";
+            box.appendChild(remover);
+
+            remover.onclick = (e) => {
+                box.remove();
+            }
+
             box.onmouseenter = (e) => {
                 dragger.style.visibility = "visible";
+                remover.style.visibility = "visible";
             }
             box.onmouseleave = (e) => {
                 dragger.style.visibility = "hidden";
+                remover.style.visibility = "hidden";
             }
 
             let textbox = document.createElement("textarea");
